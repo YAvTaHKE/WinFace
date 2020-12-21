@@ -6,6 +6,8 @@ import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 
 public class WinFace {
+
+
     public static interface User32 extends StdCallLibrary
     {
         final User32 instance = (User32) Native.loadLibrary ("user32", User32.class,
