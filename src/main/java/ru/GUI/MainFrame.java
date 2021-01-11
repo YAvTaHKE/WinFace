@@ -1,5 +1,7 @@
 package ru.GUI;
 
+import ru.FindWindow;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +48,21 @@ public class MainFrame extends JFrame {
         btnConnect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("нажата кнопка");
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            new FindWindow().findAndHook();
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }).run();
             }
         });
     }
