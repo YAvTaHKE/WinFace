@@ -21,11 +21,11 @@ public class MainFrame extends JFrame {
         this.setLocationRelativeTo(null);
 
         //Creating and adding components
-        JLabel lblLogon = new JLabel("Login:");
+        JLabel lblLogon = new JLabel("Window name:");
         lblLogon.setBounds(25, 11, 46, 20);
         this.add(lblLogon);
 
-        JLabel lblPass = new JLabel("Pass:");
+        JLabel lblPass = new JLabel("Password:");
         lblPass.setBounds(25, 38, 35, 14);
         this.add(lblPass);
 
