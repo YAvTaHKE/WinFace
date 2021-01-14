@@ -50,19 +50,17 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("нажата кнопка");
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (true) {
-                            new FindWindow().findAndHook();
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                Thread t = new Thread(() -> {
+                    while (true) {
+                        new FindWindow().findAndHook();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
-                }).run();
+                });
+                t.start();
             }
         });
     }
