@@ -21,6 +21,7 @@ public class Form extends JFrame {
     public Form() {
 
         super("LogOn");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         setContentPane(rootPanel);
         //this.setLocationByPlatform(true);
