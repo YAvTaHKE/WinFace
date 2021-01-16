@@ -17,6 +17,5 @@ public class WinFace {
             JFrame mainFrame = new Form();
             mainFrame.setVisible(true);
         });
-        //new Form();
     }
 }

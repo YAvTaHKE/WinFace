@@ -1,6 +1,7 @@
 package ru.GUI;
 
-import ru.FindWindow;
+import ru.GUI.listeners.StartListener;
+import ru.GUI.listeners.StopListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +18,12 @@ public class Form extends JFrame {
 
     public Form() {
 
-        super("LogOn");
+        //задать пиктограмму для фрейма
+        Image img = new ImageIcon("src\\main\\resources\\invisible26.png").getImage();
+        setIconImage(img);
+
+        setTitle("LogOn");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //this.setLocationRelativeTo(null);
         setContentPane(rootPanel);
 
         //получить размеры экрана
@@ -27,32 +31,27 @@ public class Form extends JFrame {
         Dimension screenSize = kit.getScreenSize();
         int screenHeight = screenSize.height;
         int screenWidth = screenSize.width;
-        System.out.println(screenHeight);
-        System.out.println(screenWidth);
 
         //установить положение фрейма
         setLocation(screenWidth / 3, screenHeight / 3);
-
-        //задать пиктограмму для фрейма
-        Image img = new ImageIcon("C:\\GIT\\Prog\\WinFace\\src\\main\\resources\\invisible26.png").getImage();
-        setIconImage(img);
+        stopButton.setEnabled(false);
 
         pack();
 
+        startButton.addActionListener(new StartListener());
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Thread t = new Thread(() -> {
-                    while (true) {
-                        new FindWindow().findAndHook();
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                });
-                t.start();
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
+            }
+        });
+        stopButton.addActionListener(new StopListener());
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startButton.setEnabled(true);
+                stopButton.setEnabled(false);
             }
         });
     }
