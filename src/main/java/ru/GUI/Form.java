@@ -1,11 +1,8 @@
 package ru.GUI;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
 import ru.FindWindow;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,11 +19,25 @@ public class Form extends JFrame {
 
         super("LogOn");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         setContentPane(rootPanel);
-        //this.setLocationByPlatform(true);
+
+        //получить размеры экрана
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();
+        int screenHeight = screenSize.height;
+        int screenWidth = screenSize.width;
+        System.out.println(screenHeight);
+        System.out.println(screenWidth);
+
+        //установить положение фрейма
+        setLocation(screenWidth / 3, screenHeight / 3);
+
+        //задать пиктограмму для фрейма
+        Image img = new ImageIcon("C:\\GIT\\Prog\\WinFace\\src\\main\\resources\\invisible26.png").getImage();
+        setIconImage(img);
+
         pack();
-        setVisible(true);
 
         startButton.addActionListener(new ActionListener() {
             @Override
