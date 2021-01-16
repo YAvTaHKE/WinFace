@@ -21,6 +21,7 @@ public class Form extends JFrame {
         //задать пиктограмму для фрейма
         Image img = new ImageIcon("src\\main\\resources\\invisible26.png").getImage();
         setIconImage(img);
+        new LogHelper(textArea1);
 
         setTitle("LogOn");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,6 +36,8 @@ public class Form extends JFrame {
         //установить положение фрейма
         setLocation(screenWidth / 3, screenHeight / 3);
         stopButton.setEnabled(false);
+
+        LogHelper.setText("========Ready=========");
 
         pack();
 
