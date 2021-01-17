@@ -8,15 +8,15 @@ public class LogHelper {
 
     private static JTextArea logArea;
     private static StringBuffer sb;
-    private static SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 
     public LogHelper(JTextArea logArea) {
-        this.logArea = logArea;
-        this.sb = new StringBuffer(logArea.getText());
+        LogHelper.logArea = logArea;
+        sb = new StringBuffer(logArea.getText());
     }
 
     public static void setText(String str){
-            logArea.setText(sb.append("\n" + formater.format(new Date()) + " - " + str).toString());
+            logArea.setText(sb.append("\n").append(formater.format(new Date())).append(" - ").append(str).toString());
     }
     public static void setText(String str, boolean b){
         if (b){

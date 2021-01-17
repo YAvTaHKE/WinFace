@@ -10,14 +10,14 @@ public class FindWindow {
     static final int WM_SETTEXT = 0x000C;//from winuser.h
     public static final int WM_LBUTTONUP = 514;
     public static final int WM_LBUTTONDOWN = 513;
-    private String windowName;
-    private String pass;
+    private final String windowName;
+    private final String pass;
 
     int count = 1;
     boolean flag = true;
 
-    public static interface User32 extends StdCallLibrary {
-        final User32 instance = (User32) Native.loadLibrary ("user32", User32.class,
+    public interface User32 extends StdCallLibrary {
+        User32 instance = Native.loadLibrary ("user32", User32.class,
                 W32APIOptions.UNICODE_OPTIONS);
 
         //поиск окна по имени окна или класса
@@ -105,7 +105,7 @@ public class FindWindow {
     private static String timeToString(long secs) {
         long hour = secs / 3600,
                 min = secs / 60 % 60,
-                sec = secs / 1 % 60;
+                sec = secs % 60;
         return String.format("%02d:%02d:%02d", hour, min, sec);
     }
 }
