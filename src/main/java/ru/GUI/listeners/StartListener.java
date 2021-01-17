@@ -2,10 +2,7 @@ package ru.GUI.listeners;
 
 import ru.FindWindow;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class StartListener implements ActionListener {
+public class StartListener{
 
     private static boolean flag = true;
 
@@ -13,10 +10,16 @@ public class StartListener implements ActionListener {
         flag = b;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public static void action(String wind, String pass) {
+
         flag = true;
-        FindWindow fw = new FindWindow();
+        FindWindow fw;
+        if ("".equals(wind) || "".equals(pass)) {
+           fw = new FindWindow();
+        } else {
+            fw = new FindWindow(wind, pass);
+        }
+
         Thread t = new Thread(() -> {
             while (flag) {
                 fw.findAndHook();

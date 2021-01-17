@@ -6,6 +6,8 @@ import ru.GUI.listeners.StopListener;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Form extends JFrame {
     private JTextField textField1;
@@ -14,6 +16,14 @@ public class Form extends JFrame {
     private JButton stopButton;
     private JTextArea textArea1;
     private JPanel rootPanel;
+
+    public JTextField getTextField1() {
+        return textField1;
+    }
+
+    public JTextField getTextField2() {
+        return textField2;
+    }
 
     public Form() {
 
@@ -44,10 +54,16 @@ public class Form extends JFrame {
 
         pack();
 
-        startButton.addActionListener(new StartListener());
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
+                StartListener.action(textField1.getText(), textField2.getText());
+            }
+        });
         startButton.addActionListener(e -> {
-            startButton.setEnabled(false);
-            stopButton.setEnabled(true);
+
         });
         stopButton.addActionListener(new StopListener());
         stopButton.addActionListener(e -> {

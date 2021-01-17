@@ -41,12 +41,7 @@ public class FindWindow {
         this.windowName = windowName;
     }
 
-    public FindWindow(String pass) {
-        this.pass = pass;
-        this.windowName = "OpenVPN - Token Password (conf-Kuznetsov_TEL_rutoken)";
-    }
-
-    public FindWindow() {
+        public FindWindow() {
         this.pass = "Rhfcjnf123";
         this.windowName = "OpenVPN - Token Password (conf-Kuznetsov_TEL_rutoken)";
     }
@@ -59,7 +54,7 @@ public class FindWindow {
             //окно не найдено
             if(hwnd == null) {
                 if (flag) {
-                    LogHelper.setText("Окно не найдено ");
+                    LogHelper.setText("Окно не найдено, ожидание ");
                     flag = false;
                 } else {
                     LogHelper.setText(timeToString(count), true);
@@ -76,34 +71,28 @@ public class FindWindow {
 
                 if (hEdit == null) {
                     LogHelper.setText("Не найдено поле ввода пороля");
+                    return;
                 }
 
                 //Вводим пороль в текстовое поле
                 int i = User32.instance.SendMessage(hEdit, WM_SETTEXT, 0, this.pass);
 
-                System.out.println("Setext -" + i);
-
                 if (i != 1) {
                     LogHelper.setText("Ошибка ввода пороля");
+                    return;
                 }
 
                 WinDef.HWND hwndOK = User32.instance.FindWindowEx(hwnd, null, "Button", "OK");
 
                 if (hwndOK == null) {
                     LogHelper.setText("Кнопка \"ОК\" не найдена");
+                    return;
                 }
 
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //Имитируем нажатие кнопки "Ок"
+                                //Имитируем нажатие кнопки "Ок"
                 int down = User32.instance.SendMessage(hwndOK,WM_LBUTTONDOWN,1,null);
                 int up = User32.instance.SendMessage(hwndOK,WM_LBUTTONUP,1,null);
 
-                System.out.println("Buttondown - " + down);
-                System.out.println("Buttonup - " +up);
 
                 if (down == 0 & up == 0) {
                     LogHelper.setText("Пороль введен");

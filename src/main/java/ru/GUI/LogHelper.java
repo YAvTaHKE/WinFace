@@ -13,7 +13,6 @@ public class LogHelper {
     public LogHelper(JTextArea logArea) {
         this.logArea = logArea;
         this.sb = new StringBuffer(logArea.getText());
-        System.out.println(sb.toString());
     }
 
     public static void setText(String str){
