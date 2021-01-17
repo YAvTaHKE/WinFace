@@ -16,9 +16,10 @@ public class StartListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         flag = true;
+        FindWindow fw = new FindWindow();
         Thread t = new Thread(() -> {
             while (flag) {
-                new FindWindow().findAndHook();
+                fw.findAndHook();
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {

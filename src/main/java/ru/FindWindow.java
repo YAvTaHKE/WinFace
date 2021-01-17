@@ -4,6 +4,7 @@ import com.sun.jna.Native;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
+import ru.GUI.LogHelper;
 
 public class FindWindow {
     static final int WM_SETTEXT = 0x000C;//from winuser.h
@@ -11,6 +12,9 @@ public class FindWindow {
     public static final int WM_LBUTTONDOWN = 513;
     private String windowName;
     private String pass;
+
+    int count = 1;
+    boolean flag = true;
 
     public static interface User32 extends StdCallLibrary {
         final User32 instance = (User32) Native.loadLibrary ("user32", User32.class,
@@ -54,23 +58,37 @@ public class FindWindow {
 
             //окно не найдено
             if(hwnd == null) {
-                System.out.println("Окно не найдено");
+                if (flag) {
+                    LogHelper.setText("Окно не найдено ");
+                    flag = false;
+                } else {
+                    LogHelper.setText(timeToString(count), true);
+                    count++;
+                }
             }
             //окно найдено
             else{
-                System.out.println("Нашли окно ввода пороля "+hwnd);
+                count = 1;
+                flag = true;
+                LogHelper.setText("Нашли окно ввода пороля "+hwnd);
 
                 WinDef.HWND hEdit = User32.instance.FindWindowEx(hwnd, null, "Edit", null);
-                System.out.println("Нашли дочернее окно Edit "+hEdit);
+                LogHelper.setText("Нашли дочернее окно Edit "+hEdit);
                 //Вводим пороль в текстовое поле
                 User32.instance.SendMessage(hEdit, WM_SETTEXT, 0, this.pass);
 
                 WinDef.HWND hwndOK = User32.instance.FindWindowEx(hwnd, null, "Button", "OK");
-                System.out.println("Нашли дочернее окно кнопки ОК "+ hwndOK);
+                LogHelper.setText("Нашли дочернее окно кнопки ОК "+ hwndOK);
                 //Имитируем нажатие кнопки "Ок"
                 User32.instance.SendMessage(hwndOK,WM_LBUTTONDOWN,1,null);
                 User32.instance.SendMessage(hwndOK,WM_LBUTTONUP,1,null);
             }
 
+    }
+    private static String timeToString(long secs) {
+        long hour = secs / 3600,
+                min = secs / 60 % 60,
+                sec = secs / 1 % 60;
+        return String.format("%02d:%02d:%02d", hour, min, sec);
     }
 }

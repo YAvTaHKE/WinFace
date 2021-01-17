@@ -4,6 +4,7 @@ import ru.GUI.listeners.StartListener;
 import ru.GUI.listeners.StopListener;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +38,11 @@ public class Form extends JFrame {
         setLocation(screenWidth / 3, screenHeight / 3);
         stopButton.setEnabled(false);
 
-        LogHelper.setText("========Ready=========");
+        //установить автоматическую прокрутку вниз
+        DefaultCaret caret = (DefaultCaret)textArea1.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+        LogHelper.setText("===========================Ready====(Введите имя окна и пороль)=======================");
 
         pack();
 

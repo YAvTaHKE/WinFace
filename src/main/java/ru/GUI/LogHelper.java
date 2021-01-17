@@ -1,11 +1,14 @@
 package ru.GUI;
 
 import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class LogHelper {
 
     private static JTextArea logArea;
     private static StringBuffer sb;
+    private static SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 
     public LogHelper(JTextArea logArea) {
         this.logArea = logArea;
@@ -17,6 +20,12 @@ public class LogHelper {
     }
 
     public static void setText(String str){
-        logArea.setText(sb.append(str).toString());
+            logArea.setText(sb.append("\n" + formater.format(new Date()) + " - " + str).toString());
+    }
+    public static void setText(String str, boolean b){
+        if (b){
+            sb.delete(sb.lastIndexOf(" ")+1, sb.length());
+            logArea.setText(sb.append(str).toString());
+        }
     }
 }
