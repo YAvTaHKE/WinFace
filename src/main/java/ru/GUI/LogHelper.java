@@ -12,11 +12,8 @@ public class LogHelper {
 
     public LogHelper(JTextArea logArea) {
         this.logArea = logArea;
-        sb = new StringBuffer();
-    }
-
-    public static StringBuffer getText(){
-        return new StringBuffer(logArea.getText());
+        this.sb = new StringBuffer(logArea.getText());
+        System.out.println(sb.toString());
     }
 
     public static void setText(String str){

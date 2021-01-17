@@ -70,18 +70,46 @@ public class FindWindow {
             else{
                 count = 1;
                 flag = true;
-                LogHelper.setText("Нашли окно ввода пороля "+hwnd);
+                LogHelper.setText("Найдено окно ввода пороля");
 
                 WinDef.HWND hEdit = User32.instance.FindWindowEx(hwnd, null, "Edit", null);
-                LogHelper.setText("Нашли дочернее окно Edit "+hEdit);
+
+                if (hEdit == null) {
+                    LogHelper.setText("Не найдено поле ввода пороля");
+                }
+
                 //Вводим пороль в текстовое поле
-                User32.instance.SendMessage(hEdit, WM_SETTEXT, 0, this.pass);
+                int i = User32.instance.SendMessage(hEdit, WM_SETTEXT, 0, this.pass);
+
+                System.out.println("Setext -" + i);
+
+                if (i != 1) {
+                    LogHelper.setText("Ошибка ввода пороля");
+                }
 
                 WinDef.HWND hwndOK = User32.instance.FindWindowEx(hwnd, null, "Button", "OK");
-                LogHelper.setText("Нашли дочернее окно кнопки ОК "+ hwndOK);
+
+                if (hwndOK == null) {
+                    LogHelper.setText("Кнопка \"ОК\" не найдена");
+                }
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 //Имитируем нажатие кнопки "Ок"
-                User32.instance.SendMessage(hwndOK,WM_LBUTTONDOWN,1,null);
-                User32.instance.SendMessage(hwndOK,WM_LBUTTONUP,1,null);
+                int down = User32.instance.SendMessage(hwndOK,WM_LBUTTONDOWN,1,null);
+                int up = User32.instance.SendMessage(hwndOK,WM_LBUTTONUP,1,null);
+
+                System.out.println("Buttondown - " + down);
+                System.out.println("Buttonup - " +up);
+
+                if (down == 0 & up == 0) {
+                    LogHelper.setText("Пороль введен");
+                } else {
+                    LogHelper.setText("Ошибка нажатия кнопки \"ОК\"");
+                }
             }
 
     }

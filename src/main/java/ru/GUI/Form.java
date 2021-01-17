@@ -6,8 +6,6 @@ import ru.GUI.listeners.StopListener;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Form extends JFrame {
     private JTextField textField1;
@@ -22,7 +20,6 @@ public class Form extends JFrame {
         //задать пиктограмму для фрейма
         Image img = new ImageIcon("src\\main\\resources\\invisible26.png").getImage();
         setIconImage(img);
-        new LogHelper(textArea1);
 
         setTitle("LogOn");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -42,25 +39,20 @@ public class Form extends JFrame {
         DefaultCaret caret = (DefaultCaret)textArea1.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        LogHelper.setText("===========================Ready====(Введите имя окна и пороль)=======================");
+        textArea1.setText("===========================Ready====(Введите имя окна и пороль)=======================");
+        new LogHelper(textArea1);
 
         pack();
 
         startButton.addActionListener(new StartListener());
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startButton.setEnabled(false);
-                stopButton.setEnabled(true);
-            }
+        startButton.addActionListener(e -> {
+            startButton.setEnabled(false);
+            stopButton.setEnabled(true);
         });
         stopButton.addActionListener(new StopListener());
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startButton.setEnabled(true);
-                stopButton.setEnabled(false);
-            }
+        stopButton.addActionListener(e -> {
+            startButton.setEnabled(true);
+            stopButton.setEnabled(false);
         });
     }
 
