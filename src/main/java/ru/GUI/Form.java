@@ -1,5 +1,6 @@
 package ru.GUI;
 
+import ru.GUI.listeners.SaveListener;
 import ru.GUI.listeners.StartListener;
 import ru.GUI.listeners.StopListener;
 
@@ -14,6 +15,7 @@ public class Form extends JFrame {
     private JButton stopButton;
     private JTextArea textArea1;
     private JPanel rootPanel;
+    private JButton saveButton;
 
     public Form() {
 
@@ -57,6 +59,8 @@ public class Form extends JFrame {
             startButton.setEnabled(true);
             stopButton.setEnabled(false);
         });
+
+        saveButton.addActionListener(new SaveListener());
     }
 
     private void createUIComponents() {
