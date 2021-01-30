@@ -1,12 +1,16 @@
 package ru.GUI;
 
-import ru.GUI.listeners.SaveListener;
+import ru.AppSettings;
 import ru.GUI.listeners.StartListener;
 import ru.GUI.listeners.StopListener;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Form extends JFrame {
     private JTextField textField1;
@@ -44,6 +48,16 @@ public class Form extends JFrame {
         textArea1.setText("===========================Ready====(Введите имя окна и пороль)=======================");
         new LogHelper(textArea1);
 
+        //Загрузить последние настройки
+        TreeMap<String, String> map = AppSettings.loadFromFile();
+        if (map != null) {
+            Map.Entry<String, String> entry = map.lastEntry();
+            if (entry != null) {
+                textField1.setText(entry.getKey());
+                textField2.setText(entry.getValue());
+            }
+        }
+
         pack();
 
         startButton.addActionListener(e -> {
@@ -60,7 +74,12 @@ public class Form extends JFrame {
             stopButton.setEnabled(false);
         });
 
-        saveButton.addActionListener(new SaveListener());
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppSettings.saveElement(textField1.getText(), textField2.getText());
+            }
+        });
     }
 
     private void createUIComponents() {

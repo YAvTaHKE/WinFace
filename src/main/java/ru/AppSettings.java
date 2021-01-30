@@ -1,51 +1,63 @@
 package ru;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.Set;
+import ru.GUI.LogHelper;
+
+import java.io.*;
+import java.util.*;
 
 public class AppSettings {
 
-    private static Properties prop = new Properties();
     private static AppSettings SINGLETON;
+    private static TreeMap<String, String> map;
     static {
         SINGLETON = new AppSettings();
     }
 
     private AppSettings() {
-
+        map = new TreeMap();
     }
 
     public static void saveElement(String key, String val) {
-        prop.setProperty(key, val);
+        map.put(key, val);
+        saveToFile();
     }
 
-    public static String loadElement(String key) {
-        return prop.getProperty(key);
-    }
+    public static void saveToFile (){
 
-
-    public static void saveToFile () throws IOException{
-
-        try (FileOutputStream output = new FileOutputStream("config.properties")){
-            prop.store(output, null);
-        }
-    }
-
-    public static Set loadFromFile() {
-
-        try (FileInputStream input = new FileInputStream("config.properties")) {
-
-             prop.load(input);
-             Set set = prop.entrySet();
-
-        return set;
+        try (BufferedWriter output = new BufferedWriter(
+                new FileWriter("config.properties"))) {
+            map.forEach((k, v) ->
+            {
+                try {
+                    output.write(k);
+                    output.newLine();
+                    output.write(v);
+                    output.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
+
+    public static TreeMap<String, String> loadFromFile() {
+
+        try(BufferedReader input = new BufferedReader(
+                new FileReader("config.properties"))){
+            while (input.ready()) {
+                map.put(input.readLine(), input.readLine());
+            }
+        } catch (FileNotFoundException e) {
+            LogHelper.setText("Файл с настройками не найден");
+            return map;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return map;
+        }
+        return map;
+    }
+
 
 }
