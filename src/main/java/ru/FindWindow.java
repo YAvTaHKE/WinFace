@@ -65,20 +65,20 @@ public class FindWindow {
             else{
                 count = 1;
                 flag = true;
-                LogHelper.setText("Найдено окно ввода пороля");
+                LogHelper.setText("Найдено окно ввода пароля");
 
                 WinDef.HWND hEdit = User32.instance.FindWindowEx(hwnd, null, "Edit", null);
 
                 if (hEdit == null) {
-                    LogHelper.setText("Не найдено поле ввода пороля");
+                    LogHelper.setText("Не найдено поле ввода пароля");
                     return;
                 }
 
-                //Вводим пороль в текстовое поле
+                //Вводим пароль в текстовое поле
                 int i = User32.instance.SendMessage(hEdit, WM_SETTEXT, 0, this.pass);
 
                 if (i != 1) {
-                    LogHelper.setText("Ошибка ввода пороля");
+                    LogHelper.setText("Ошибка ввода пароля");
                     return;
                 }
 
@@ -95,7 +95,7 @@ public class FindWindow {
 
 
                 if (down == 0 & up == 0) {
-                    LogHelper.setText("Пороль введен");
+                    LogHelper.setText("Пароль введен");
                 } else {
                     LogHelper.setText("Ошибка нажатия кнопки \"ОК\"");
                 }
