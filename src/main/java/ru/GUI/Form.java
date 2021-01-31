@@ -9,17 +9,19 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class Form extends JFrame {
-    private JTextField textField1;
-    private JTextField textField2;
     private JButton startButton;
     private JButton stopButton;
     private JTextArea textArea1;
     private JPanel rootPanel;
     private JButton saveButton;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
 
     public Form() {
 
@@ -48,41 +50,47 @@ public class Form extends JFrame {
         textArea1.setText("===========================Ready====(Введите имя окна и пороль)=======================");
         new LogHelper(textArea1);
 
-        //Загрузить последние настройки
-        TreeMap<String, String> map = AppSettings.loadFromFile();
-        if (map != null) {
-            Map.Entry<String, String> entry = map.lastEntry();
-            if (entry != null) {
-                textField1.setText(entry.getKey());
-                textField2.setText(entry.getValue());
-            }
-        }
-
+        updateComboBox();
         pack();
 
         startButton.addActionListener(e -> {
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
-            StartListener.action(textField1.getText(), textField2.getText());
+            StartListener.action((String)comboBox1.getSelectedItem(), (String)comboBox2.getSelectedItem());
         });
-        startButton.addActionListener(e -> {
 
-        });
         stopButton.addActionListener(new StopListener());
         stopButton.addActionListener(e -> {
             startButton.setEnabled(true);
             stopButton.setEnabled(false);
         });
 
+        //при нажатии кнопки Save
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AppSettings.saveElement(textField1.getText(), textField2.getText());
+                AppSettings.saveElement((String)comboBox1.getSelectedItem(), (String)comboBox2.getSelectedItem());
+                updateComboBox();
             }
         });
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+    }
+
+    private void updateComboBox(){
+        //Загрузить последние настройки
+        TreeMap<String, String> map = AppSettings.loadFromFile();
+        //Сортировка реверс
+        NavigableMap<String, String> reverseMap = map.descendingMap();
+        //Очистить combobox
+        comboBox1.removeAllItems();
+        comboBox2.removeAllItems();
+        //Добавить данные в комбобокс
+        reverseMap.forEach((k, v)->{
+            comboBox1.addItem(k);
+            comboBox2.addItem(v);
+        });
     }
 }
