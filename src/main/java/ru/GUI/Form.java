@@ -9,8 +9,6 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -22,6 +20,7 @@ public class Form extends JFrame {
     private JButton saveButton;
     private JComboBox comboBox1;
     private JComboBox comboBox2;
+    private JButton zWin;
 
     public Form() {
 
@@ -71,6 +70,15 @@ public class Form extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 AppSettings.saveElement((String)comboBox1.getSelectedItem(), (String)comboBox2.getSelectedItem());
                 updateComboBox();
+            }
+        });
+
+        //при нажатии на кнопку zWin
+        zWin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame windowsList = new WindowsList();
+                windowsList.setVisible(true);
             }
         });
     }
