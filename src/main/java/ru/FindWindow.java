@@ -1,10 +1,15 @@
 package ru;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 import ru.GUI.LogHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FindWindow {
     static final int WM_SETTEXT = 0x000C;//from winuser.h
@@ -32,6 +37,12 @@ public class FindWindow {
         );
         //Отправка сообщения окну
         int SendMessage(WinDef.HWND hWnd, int Msg, int wParam, String lParam);
+
+        int GetWindowText(WinDef.HWND hWnd, char[] lpString, int nMaxCount);
+
+        int GetWindowTextLength(WinDef.HWND hWnd);
+
+        boolean EnumWindows(WinUser.WNDENUMPROC lpEnumFunc, Pointer data);
 
         //Здесь можно добавлять методы из Windows API
     }
@@ -107,5 +118,43 @@ public class FindWindow {
                 min = secs / 60 % 60,
                 sec = secs % 60;
         return String.format("%02d:%02d:%02d", hour, min, sec);
+    }
+
+    //Получить имя окна по хендлу
+    public static String getTitleWindow(WinDef.HWND hwnd) {
+        int titleLength = User32.instance.GetWindowTextLength(hwnd) + 1;
+        char[] title = new char[titleLength];
+        User32.instance.GetWindowText(hwnd, title, titleLength);
+        return Native.toString(title);
+    }
+
+    /**
+     * Returns a map of process HWND's to their window titles.
+     *
+     * @return
+     */
+
+    public static Map<WinDef.HWND, String> getWindows() {
+        Map<WinDef.HWND, String> map = new HashMap<>();
+
+        WinUser.WNDENUMPROC wndenumproc = new WinUser.WNDENUMPROC() {
+            int count = 0;
+
+            @Override
+            public boolean callback(WinDef.HWND hWnd, Pointer pointer) {
+
+                String wText = getTitleWindow(hWnd);
+
+                // избавляемся от этого блока if, если вам нужны все окна,
+                // независимо от того, есть в них текст или нет
+                if (wText.isEmpty()) {
+                    return true;
+                }
+                map.put(hWnd, wText);
+                return true;
+            }
+        };
+        User32.instance.EnumWindows(wndenumproc, null);
+        return map;
     }
 }
