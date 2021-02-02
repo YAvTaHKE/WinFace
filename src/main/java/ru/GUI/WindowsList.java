@@ -29,7 +29,6 @@ public class WindowsList extends JFrame{
 
         FindWindow.getWindows().forEach((k, v) ->
                 listModel.addElement(v.trim()));
-
         //pack();
     }
 }
