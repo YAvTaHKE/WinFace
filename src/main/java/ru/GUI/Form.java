@@ -1,6 +1,7 @@
 package ru.GUI;
 
 import ru.AppSettings;
+import ru.GUI.listeners.ShowWindowsListener;
 import ru.GUI.listeners.StartListener;
 import ru.GUI.listeners.StopListener;
 
@@ -9,8 +10,7 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Form extends JFrame {
     private JButton startButton;
@@ -20,7 +20,8 @@ public class Form extends JFrame {
     private JButton saveButton;
     private JComboBox comboBox1;
     private JComboBox comboBox2;
-    private JButton zWin;
+    private JButton showWindowsButton;
+
 
     public Form() {
 
@@ -74,13 +75,7 @@ public class Form extends JFrame {
         });
 
         //при нажатии на кнопку zWin
-        zWin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame windowsList = new WindowsList();
-                windowsList.setVisible(true);
-            }
-        });
+        showWindowsButton.addActionListener(new ShowWindowsListener(this));
     }
 
     private void createUIComponents() {
@@ -89,9 +84,10 @@ public class Form extends JFrame {
 
     private void updateComboBox(){
         //Загрузить последние настройки
-        TreeMap<String, String> map = AppSettings.loadFromFile();
+        LinkedHashMap<String, String> map = AppSettings.loadFromFile();
         //Сортировка реверс
-        NavigableMap<String, String> reverseMap = map.descendingMap();
+        LinkedHashMap<String, String> reverseMap = reverse(map);
+
         //Очистить combobox
         comboBox1.removeAllItems();
         comboBox2.removeAllItems();
@@ -101,4 +97,24 @@ public class Form extends JFrame {
             comboBox2.addItem(v);
         });
     }
+
+    public void setWindowName(String wName) {
+        comboBox1.setSelectedItem(wName);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> reverse(LinkedHashMap<K, V> map)
+    {
+        LinkedHashMap<K, V> reversedMap = new LinkedHashMap<K, V>();
+
+        ListIterator<Map.Entry<K, V>> it = new ArrayList<>(map.entrySet()).listIterator(map.entrySet().size());
+
+        while (it.hasPrevious())
+        {
+            Map.Entry<K, V> el = it.previous();
+            reversedMap.put(el.getKey(), el.getValue());
+        }
+
+        return reversedMap;
+    }
+
 }

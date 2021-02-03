@@ -1,21 +1,28 @@
 package ru.GUI;
 
 import ru.FindWindow;
+import ru.GUI.Form;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class WindowsList extends JFrame{
+public class WindowsList extends JFrame implements MouseListener {
     private JPanel panel1;
     private JTextField textField1;
     private JTable table1;
     private DefaultTableModel tableModel;
     private TableRowSorter<TableModel> sorter;
+    private Form mainFrame;
 
-    public WindowsList(){
+    public WindowsList(JFrame mainFrame){
+        if (mainFrame instanceof Form) this.mainFrame = (Form) mainFrame;
+
         setTitle("Windows name list");
         setSize(new Dimension(400, 310));
         setContentPane(panel1);
@@ -82,7 +89,10 @@ public class WindowsList extends JFrame{
             }
             column.setPreferredWidth(prefWidthMax + 10);
         }
+        table1.addMouseListener(this);
     }
+
+
 
     /**
      * Update the row filter regular expression from the expression in
@@ -99,4 +109,32 @@ public class WindowsList extends JFrame{
         sorter.setRowFilter(rf);
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(e.getClickCount() == 2 ){
+            JTable obj = (JTable)e.getSource();
+            mainFrame.setWindowName(obj.getValueAt(obj.getSelectedRow(), 1).toString());
+            obj.getValueAt(obj.getSelectedRow(), 1);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

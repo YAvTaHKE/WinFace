@@ -7,6 +7,7 @@ import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 import ru.GUI.LogHelper;
+import ru.GUI.listeners.StartListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class FindWindow {
             else{
                 count = 1;
                 flag = true;
-                LogHelper.setText("Найдено окно ввода пароля");
+                LogHelper.setText("Окно найдено");
 
                 WinDef.HWND hEdit = User32.instance.FindWindowEx(hwnd, null, "Edit", null);
 

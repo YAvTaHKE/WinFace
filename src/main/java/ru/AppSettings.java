@@ -8,13 +8,13 @@ import java.util.*;
 public class AppSettings {
 
     private static AppSettings SINGLETON;
-    private static TreeMap<String, String> map;
+    private static LinkedHashMap<String, String> map;
     static {
         SINGLETON = new AppSettings();
     }
 
     private AppSettings() {
-        map = new TreeMap();
+        map = new LinkedHashMap<>();
     }
 
     public static void saveElement(String key, String val) {
@@ -42,7 +42,7 @@ public class AppSettings {
         }
     }
 
-    public static TreeMap<String, String> loadFromFile() {
+    public static LinkedHashMap<String, String> loadFromFile() {
 
         try(BufferedReader input = new BufferedReader(
                 new FileReader("config.properties"))){
