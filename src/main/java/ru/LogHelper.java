@@ -1,4 +1,4 @@
-package ru.GUI;
+package ru;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -15,9 +15,12 @@ public class LogHelper {
         sb = new StringBuffer(logArea.getText());
     }
 
+    //Установить текст в JTextArea основного окна
     public static void setText(String str){
             logArea.setText(sb.append("\n").append(formater.format(new Date())).append(" - ").append(str).toString());
     }
+
+    //Установить текст в JTextArea основного окна
     public static void setText(String str, boolean b){
         if (b){
             sb.delete(sb.lastIndexOf(" ")+1, sb.length());

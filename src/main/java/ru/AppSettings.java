@@ -1,12 +1,11 @@
 package ru;
 
-import ru.GUI.LogHelper;
-
 import java.io.*;
 import java.util.*;
 
 public class AppSettings {
 
+    private final static String configFile = new String("config.ini");
     private static AppSettings SINGLETON;
     private static LinkedHashMap<String, String> map;
     static {
@@ -25,7 +24,7 @@ public class AppSettings {
     public static void saveToFile (){
 
         try (BufferedWriter output = new BufferedWriter(
-                new FileWriter("config.properties"))) {
+                new FileWriter(configFile))) {
             map.forEach((k, v) ->
             {
                 try {
@@ -45,7 +44,7 @@ public class AppSettings {
     public static LinkedHashMap<String, String> loadFromFile() {
 
         try(BufferedReader input = new BufferedReader(
-                new FileReader("config.properties"))){
+                new FileReader(configFile))){
             while (input.ready()) {
                 map.put(input.readLine(), input.readLine());
             }
@@ -58,6 +57,4 @@ public class AppSettings {
         }
         return map;
     }
-
-
 }

@@ -4,6 +4,7 @@ import ru.AppSettings;
 import ru.GUI.listeners.ShowWindowsListener;
 import ru.GUI.listeners.StartListener;
 import ru.GUI.listeners.StopListener;
+import ru.LogHelper;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;

@@ -6,22 +6,25 @@ import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
-import ru.GUI.LogHelper;
-import ru.GUI.listeners.StartListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Класс для работы с Windows API
+ */
+
 public class FindWindow {
+
     static final int WM_SETTEXT = 0x000C;//from winuser.h
     public static final int WM_LBUTTONUP = 514;
     public static final int WM_LBUTTONDOWN = 513;
     private final String windowName;
     private final String pass;
-
     int count = 1;
-    boolean flag = true;
+    boolean flag = true; //флаг счетчика
 
+    //Интерфейс определяющий методы из Windows API
     public interface User32 extends StdCallLibrary {
         User32 instance = Native.loadLibrary ("user32", User32.class,
                 W32APIOptions.UNICODE_OPTIONS);
@@ -36,13 +39,17 @@ public class FindWindow {
                 String lpszClass,   // указатель имени класса
                 String lpszWindow   // указатель имени окна
         );
+
         //Отправка сообщения окну
         int SendMessage(WinDef.HWND hWnd, int Msg, int wParam, String lParam);
 
+        //Получить имя окна
         int GetWindowText(WinDef.HWND hWnd, char[] lpString, int nMaxCount);
 
+        //Получить длину имени окна
         int GetWindowTextLength(WinDef.HWND hWnd);
 
+        //перечисляет все окна верхнего уровня на экране, передавая дескриптор каждого окна, в свою очередь, в определяемую программой функцию повторного вызова
         boolean EnumWindows(WinUser.WNDENUMPROC lpEnumFunc, Pointer data);
 
         //Здесь можно добавлять методы из Windows API
@@ -53,7 +60,7 @@ public class FindWindow {
         this.windowName = windowName;
     }
 
-        public FindWindow() {
+    public FindWindow() {
         this.pass = "Rhfcjnf123";
         this.windowName = "OpenVPN - Token Password (conf-Kuznetsov_TEL_rutoken)";
     }
@@ -79,6 +86,7 @@ public class FindWindow {
                 flag = true;
                 LogHelper.setText("Окно найдено");
 
+                //Поиск поля ввода пороля
                 WinDef.HWND hEdit = User32.instance.FindWindowEx(hwnd, null, "Edit", null);
 
                 if (hEdit == null) {
@@ -101,7 +109,7 @@ public class FindWindow {
                     return;
                 }
 
-                                //Имитируем нажатие кнопки "Ок"
+                //Имитируем нажатие кнопки "Ок"
                 int down = User32.instance.SendMessage(hwndOK,WM_LBUTTONDOWN,1,null);
                 int up = User32.instance.SendMessage(hwndOK,WM_LBUTTONUP,1,null);
 
@@ -112,8 +120,8 @@ public class FindWindow {
                     LogHelper.setText("Ошибка нажатия кнопки \"ОК\"");
                 }
             }
-
     }
+
     private static String timeToString(long secs) {
         long hour = secs / 3600,
                 min = secs / 60 % 60,
