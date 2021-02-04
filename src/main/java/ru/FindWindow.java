@@ -44,13 +44,13 @@ public class FindWindow {
         int SendMessage(WinDef.HWND hWnd, int Msg, int wParam, String lParam);
 
         //Получить имя окна
-        int GetWindowText(WinDef.HWND hWnd, char[] lpString, int nMaxCount);
+        void GetWindowText(WinDef.HWND hWnd, char[] lpString, int nMaxCount);
 
         //Получить длину имени окна
         int GetWindowTextLength(WinDef.HWND hWnd);
 
         //перечисляет все окна верхнего уровня на экране, передавая дескриптор каждого окна, в свою очередь, в определяемую программой функцию повторного вызова
-        boolean EnumWindows(WinUser.WNDENUMPROC lpEnumFunc, Pointer data);
+        void EnumWindows(WinUser.WNDENUMPROC lpEnumFunc, Pointer data);
 
         //Здесь можно добавлять методы из Windows API
     }
@@ -139,15 +139,12 @@ public class FindWindow {
 
     /**
      * Returns a map of process HWND's to their window titles.
-     *
-     * @return
      */
 
     public static Map<WinDef.HWND, String> getWindows() {
         Map<WinDef.HWND, String> map = new HashMap<>();
 
         WinUser.WNDENUMPROC wndenumproc = new WinUser.WNDENUMPROC() {
-            int count = 0;
 
             @Override
             public boolean callback(WinDef.HWND hWnd, Pointer pointer) {

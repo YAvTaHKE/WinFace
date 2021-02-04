@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class ShowWindowsListener implements ActionListener {
 
-    private JFrame frame;
+    private final JFrame frame;
 
     public ShowWindowsListener(JFrame frame) {
         this.frame = frame;

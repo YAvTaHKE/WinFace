@@ -5,12 +5,9 @@ import java.util.*;
 
 public class AppSettings {
 
-    private final static String configFile = new String("config.ini");
-    private static AppSettings SINGLETON;
+    private final static String configFile = "config.ini";
+    private static final AppSettings SINGLETON = new AppSettings();
     private static LinkedHashMap<String, String> map;
-    static {
-        SINGLETON = new AppSettings();
-    }
 
     private AppSettings() {
         map = new LinkedHashMap<>();

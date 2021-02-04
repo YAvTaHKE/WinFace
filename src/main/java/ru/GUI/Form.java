@@ -105,7 +105,7 @@ public class Form extends JFrame {
 
     public static <K, V> LinkedHashMap<K, V> reverse(LinkedHashMap<K, V> map)
     {
-        LinkedHashMap<K, V> reversedMap = new LinkedHashMap<K, V>();
+        LinkedHashMap<K, V> reversedMap = new LinkedHashMap<>();
 
         ListIterator<Map.Entry<K, V>> it = new ArrayList<>(map.entrySet()).listIterator(map.entrySet().size());
 
